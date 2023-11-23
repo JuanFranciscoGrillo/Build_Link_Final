@@ -1,0 +1,33 @@
+// models/user.js
+'use strict'
+const {
+  Model
+} = require('sequelize')
+
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+    static associate (models) {
+      User.hasMany(models.JobListing, {
+        foreignKey: 'userId',
+        as: 'jobListings'
+      })
+      User.hasMany(models.Application, {
+        foreignKey: 'applicantId',
+        as: 'applications'
+      })
+      User.hasMany(models.Message, {
+        foreignKey: 'senderId',
+        as: 'messages'
+      })
+    }
+  }
+  User.init({
+    name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'User'
+  })
+  return User
+}
